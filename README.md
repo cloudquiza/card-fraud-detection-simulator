@@ -1,15 +1,20 @@
 # Card Fraud Detection Simulator
 
-Synthetic card transaction data, fraud patterns, rule based scoring, and an interactive dashboard.
-Built to practice how modern card fraud and payments risk systems behave in a fintech or issuer/acquirer environment.
+Synthetic card transaction data, fraud patterns, risk scoring, and an analytics dashboard built to practice how modern card-not-present (CNP) fraud detection works in a fintech environment.
+
+### **Streamlit Dashboard (Rule-Level & Transaction-Level View)**
 
 ![Dashboard Screenshot](docs/img/card_dashboard_1.png)
 ![Dashboard Screenshot](docs/img/card_dashboard_2.png)
 ![Dashboard Screenshot](docs/img/card_dashboard_3.png)
 ![Dashboard Screenshot](docs/img/card_dashboard_4.png)
 
+### **Tableau Dashboard (Portfolio-Level Analytics & MCC/BIN Risk)**
+
+![Tableau Dashboard Screenshot](docs/img/card_dashboard_5.png)
+
 <p align="center">
-  <em>Interactive Streamlit dashboard showing risk scores, MCC/BIN insights, and high-risk entities.</em>
+  <em>Interactive Streamlit and Tableau dashboards visualizing CNP fraud patterns, BIN/MCC concentration, and portfolio-level KPIs.</em>
 </p>
 
 ---
@@ -18,93 +23,102 @@ Built to practice how modern card fraud and payments risk systems behave in a fi
 
 **What this project demonstrates:**
 
-- Ability to think like a payments risk analyst working in card fraud.
-- Understanding of card-not-present (CNP) fraud, MCC patterns, BIN behavior, and device/IP risk.
-- Python and pandas for synthetic data generation and fraud pattern simulation.
-- Rule based risk scoring that is explainable and transparent.
-- Streamlit dashboard design mirroring internal analyst tooling.
-- Jupyter Notebook storytelling for interviews and walk-throughs.
-- End-to-end workflow design from data creation to scoring to visualization.
+- Understanding of card-not-present (CNP) fraud behavior and risk signals
+- MCC and BIN-level fraud pattern analysis
+- Python + pandas for data generation and rule-based scoring
+- Building synthetic datasets that mirror real card fraud patterns
+- Streamlit dashboard design for rule-level detail
+- Tableau dashboard design for high-level portfolio analytics
+- End-to-end workflow from data creation → scoring → BI visualization
+- Ability to explain how card fraud works using self-built tools
 
 **What you can review directly on GitHub:**
 
-- Risk rules and scoring logic in `src/risk_rules.py`.
-- Data generation workflow in `src/generate_synthetic_card_data.py`.
-- Scored outputs and alerts in the `data/` folder.
-- Full exploratory analysis notebook in `notebooks/card_fraud_analysis.ipynb`.
-- Dashboard implementation in `dashboard/streamlit_app.py`.
+- Risk logic in `src/risk_rules.py`
+- Data generation workflow in `src/generate_synthetic_data.py`
+- Scored outputs in `data/`
+- Exploratory analysis in `notebooks/card_fraud_analysis.ipynb`
+- Streamlit dashboard in `dashboard/streamlit_app.py`
+- Tableau-ready export in `src/export_for_bi.py`
 
 ---
 
 ## What this project does
 
-This project is an end-to-end card fraud simulation designed to mirror the work of a payments risk analyst investigating CNP abuse, BIN anomalies, device/IP patterns, and chargeback risk.
+This project simulates CNP card fraud to give a hands-on look at how fraud patterns emerge across merchant categories (MCC), issuing banks (BIN), device activity, geography, and card attributes.
 
----
+### 1. Generates synthetic users and card transactions
 
-### 1. Generates synthetic cardholders, merchants, and transactions
+- Includes card-present and card-not-present traffic
+- Assigns MCCs, BINs, brands, card type, country, device ID
+- Builds realistic spend patterns and timestamps
 
-- Card profiles include BIN, brand, card type (credit, debit, prepaid), and home country.
-- Merchants include MCC codes and country logic.
-- Transactions include CNP vs card-present behavior, IP country, device ID, amount, timestamp, and authorization result.
+### 2. Injects realistic fraud behaviors
 
----
+- Card testing attacks
+- High-risk MCC exposure
+- BIN ranges associated with synthetic identity
+- Device + country mismatch patterns
+- Elevated risk in specific card brands/types
 
-### 2. Injects realistic card fraud patterns
+### 3. Scores transactions using rule-based fraud detection
 
-- **Card testing behavior** (many small CNP authorizations across merchants).
-- **High-risk BIN + high-risk MCC** combinations (prepaid + quasi cash, betting, direct marketing).
-- **Geo mismatch CNP activity** (IP origin inconsistent with home country).
-- **Amount spikes** on new or unusual merchants.
-- **Device sharing patterns** suggesting account farms.
-- **Chargeback-like behavior** to simulate loss recovery patterns.
-
----
-
-### 3. Scores transactions with rule based detection
-
-- Flags CNP high-amount transactions.
-- Flags transactions in high-risk MCCs (5968, 4816, 7995, 6051).
-- Elevates risk for prepaid BIN usage at sensitive merchants.
-- Surfaces geo mismatch behavior.
-- Flags devices used across many cardholders.
-- Identifies card-testing velocity patterns.
-- Produces a simple `risk_score` and list of triggered rules in `data/card_alerts.csv`.
-
----
+- Flags high-risk MCCs and BINs
+- Detects device anomaly patterns
+- Flags abnormal spend behavior
+- Produces a `risk_score` and an alerts dataset
 
 ### 4. Analyzes behavior in a notebook
 
-- MCC-level fraud patterns and average risk.
-- BIN behavior including prepaid risk.
-- Geo mismatch concentrations.
-- Device-level anomalies.
-- Rule precision and performance measured against synthetic `is_fraud_pattern` labels.
-- Chargeback correlation by risk bucket.
+- BIN/MCC concentration
+- Fraud pattern distributions
+- Rule performance vs. synthetic fraud labels
+- Average risk score trends
+- Chargeback and fraud pattern rates
 
-This notebook is designed to show how a card risk analyst thinks through fraud signals end-to-end.
+### 5. Visualizes insights in Streamlit
+
+- KPI summary
+- Rule-level inspection
+- Device + user risk breakdown
+- Transaction-level filtering
 
 ---
 
-### 5. Visualizes insights in a Streamlit dashboard
+## **Tableau Dashboard (High-Level Portfolio Analysis)**
 
-- Filters for risk score, MCC, brand, card type, and CNP vs card-present.
-- Risk score distribution chart.
-- MCC and BIN segments sorted by average risk.
-- High-level KPIs (approval rate, fraud rate, chargeback rate, high-risk rate).
-- Top high-risk cards.
-- Devices associated with many high-risk cards.
-- Rule-level alert counts and sample details.
+This project includes a **Tableau Public dashboard** that provides a polished, industry-style view of card fraud risk.
+
+### **What the Tableau dashboard shows**
+
+- **Portfolio KPIs**: chargeback rate, fraud pattern rate, average risk score, total volume
+- **MCC Risk**: merchant categories with the highest concentration of risky behavior
+- **BIN Risk**: issuing banks showing elevated fraud signals
+- **Filters**: home country, brand, card type, card-present vs CNP
+
+### **Why Tableau is included**
+
+The Tableau layer demonstrates the ability to:
+
+- Build BI tooling on top of fraud-scored datasets
+- Communicate patterns at a portfolio level
+- Present issuer and merchant-category exposure visually
+- Mirror how fintech risk teams monitor fraud in real systems
+
+### **Link to Tableau Dashboard**
+
+[Card Fraud Overview Dashboard](https://public.tableau.com/app/profile/carlos.urquiza/viz/CardFraudDetectionSimulatorMCCandBINRisk/CardFraudOverview?publish=yes)
 
 ---
 
 ## Tech stack
 
-- **Python** for simulation and core logic.
-- **pandas** for fraud analysis and transformations.
-- **Jupyter Notebook** for exploration and explanation.
-- **Streamlit** for the dashboard.
-- **matplotlib** for charts in the notebook.
+- **Python** for data generation & scoring
+- **pandas** for risk analysis
+- **Jupyter Notebook** for exploration
+- **Streamlit** for interactive interface
+- **Tableau Public** for high-level BI visualization
+- **matplotlib** for notebook plots
 
 ---
 
@@ -113,46 +127,42 @@ This notebook is designed to show how a card risk analyst thinks through fraud s
 ```text
 card-fraud-detection-simulator/
 ├─ data/
-│  ├─ card_transactions.csv              # synthetic transactions (generated)
-│  ├─ card_transactions_scored.csv       # transactions with risk_score (generated)
-│  └─ card_alerts.csv                    # long table of rule hits (generated)
+│  ├─ card_transactions.csv               # synthetic transactions
+│  ├─ card_transactions_scored.csv        # scored transactions
+│  ├─ card_transactions_for_bi.csv        # Tableau-ready export
 │
 ├─ src/
-│  ├─ generate_synthetic_card_data.py    # builds cards, merchants, and transactions
-│  ├─ risk_rules.py                      # rule based card fraud detection
-│  └─ run_scoring.py                     # applies rules and writes outputs
+│  ├─ generate_synthetic_data.py          # builds user + transaction data
+│  ├─ risk_rules.py                       # rule-based scoring
+│  ├─ run_scoring.py                      # runs scoring pipeline
+│  └─ export_for_bi.py                    # cleans + exports BI-friendly dataset
 │
 ├─ dashboard/
-│  └─ streamlit_app.py                   # interactive card fraud dashboard
+│  └─ streamlit_app.py                    # Streamlit interface
 │
 ├─ notebooks/
-│  └─ card_fraud_analysis.ipynb          # exploratory analysis and evaluation
+│  └─ card_fraud_analysis.ipynb           # exploratory notebook
 │
 └─ docs/
    └─ img/
-      ├─ card_dashboard_1.png            # dashboard screenshots
-      └─ card_dashboard_2.png
+      └─ dashboard_preview.png            # Tableau screenshot
 ```
 
 ---
 
 ## How to review this project on GitHub without running anything
 
-You can fully understand the system without running code:
+1. **Review the rule logic**
+   `src/risk_rules.py` explains every scoring rule.
 
-1. **Review the rules**
-   `src/risk_rules.py` shows each detection rule and how it contributes to risk scoring.
+2. **Check the Jupyter notebook**
+   `notebooks/card_fraud_analysis.ipynb` explores BIN/MCC patterns and rule performance.
 
-2. **Check the notebook**
-   `notebooks/card_fraud_analysis.ipynb` walks through MCC patterns, BIN risk, geo mismatches, and rule performance.
+3. **Explore the Tableau dashboard**
+   Shows fraud exposure, KPIs, MCC/BIN concentration.
 
-3. **Scan the dashboard code**
-   `dashboard/streamlit_app.py` shows how KPIs, charts, and filters connect to the underlying scoring logic.
-
-4. **Browse the generated data**
-   `data/card_transactions_scored.csv` includes risk scores, triggered rules, and synthetic chargeback flags.
-
-This gives a complete picture of how a card fraud detection workflow functions end-to-end.
+4. **Look at the Streamlit app**
+   View detailed transaction-level and user-level risk breakdown.
 
 ---
 
@@ -181,31 +191,47 @@ source .venv/bin/activate
 pip install pandas numpy jupyter streamlit matplotlib
 ```
 
-### 4. Generate synthetic data
+_(Or use `pip install -r requirements.txt` if you have one set up.)_
+
+### 4. Generate synthetic card transactions
 
 ```bash
-python src/generate_synthetic_card_data.py
+python src/generate_synthetic_data.py
 ```
 
-### 5. Score the transactions
+### 5. Score transactions with risk rules
 
 ```bash
 python src/run_scoring.py
 ```
 
-### 6. Launch the Streamlit dashboard
+This creates `data/card_transactions_scored.csv` with `risk_score` and fraud pattern labels.
+
+### 6. (Optional) Export BI-ready dataset for Tableau
+
+```bash
+python src/export_for_bi.py
+```
+
+This writes `data/card_transactions_for_bi.csv`, which is the file used as the data source for the Tableau dashboard.
+
+### 7. Launch the Streamlit dashboard
 
 ```bash
 streamlit run dashboard/streamlit_app.py
 ```
 
-### 7. Open the notebook
+Streamlit will print a local URL (usually [http://localhost:8501](http://localhost:8501)) where you can interact with the dashboard.
+
+### 8. Open the analysis notebook
 
 ```bash
 jupyter notebook
 ```
 
----
+Then open:
+
+`notebooks/card_fraud_analysis.ipynb`
 
 </details>
 
@@ -213,10 +239,8 @@ jupyter notebook
 
 ## Why I built this
 
-I created this project to practice thinking through card fraud using fresh, synthetic examples instead of relying only on older experience. Working through end-to-end workflows helps me explain risk concepts clearly in interviews, especially around CNP patterns, BIN/MCC behavior, device anomalies, and velocity signals.
+This project helps me strengthen how I think about card fraud patterns, analyze BIN/MCC exposure, and communicate risk clearly through dashboards.
 
-I also used AI throughout the build, which made it easier to stay focused on understanding the fraud logic rather than boilerplate setup. Using AI feels increasingly expected in modern risk and fintech work, so it made sense to incorporate it into the process.
-
-If you work in payments risk, fraud, trust and safety, or card issuing/acquiring and have feedback or ideas for extending this project, I would love to hear them.
+It also serves as an interview-ready artifact: I can walk through the dataset, scoring logic, and dashboards to explain CNP fraud signals the way a modern payments risk analyst would.
 
 ---
